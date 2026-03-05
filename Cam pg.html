@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LIKE I ALWAYS DO</title>
+
+<!-- Fun Font -->
+<link href="https://fonts.googleapis.com/css2?family=Chewy&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div id="complimentBox">You look an angel! 😇</div>
+
+<!-- Floating doodles -->
+<div class="doodle" style="top:10%;left:10%;">⭐</div>
+<div class="doodle" style="top:20%;right:12%;">💖</div>
+<div class="doodle" style="bottom:15%;left:15%;">✨</div>
+<div class="doodle" style="bottom:10%;right:12%;">🌟</div>
+
+<!-- Extra Floating Doodles -->
+
+<div class="doodle" style="top:8%;left:40%;">⭐</div>
+<div class="doodle" style="top:30%;left:5%;">🌻</div>
+<div class="doodle" style="bottom:35%;right:18%;color:#0b3d91;">✨</div>
+<div class="doodle" style="bottom:25%;right:30%;">🌻</div>
+
+<div class="doodle" style="top:15%;left:75%;color:#0b3d91;">💙</div>
+<div class="doodle" style="top:50%;left:20%;color:#0b3d91;">💙</div>
+
+<div class="doodle" style="top:40%;right:5%;">🐠</div>
+<div class="doodle" style="bottom:20%;left:35%;">🐟</div>
+<div class="doodle" style="top:70%;left:60%;">🐠</div>
+
+<div id="container">
+    <div id="booth">
+        <div class="booth-frame">
+            <video id="video" autoplay muted></video>
+            <div id="countdown">3</div>
+        </div>
+
+        <div class="filter-buttons">
+            <button data-filter="none">Normal</button>
+            <button data-filter="grayscale(100%)">B&W</button>
+            <button data-filter="sepia(80%)">Sepia</button>
+            <button data-filter="saturate(200%) hue-rotate(300deg)">Cyber Pop</button>
+            <button data-filter="blur(1px) contrast(110%) saturate(130%)">Soft Pop</button>
+            <button data-filter="invert(80%) hue-rotate(200deg)">Neon</button>
+        </div>
+
+        <button id="captureBtn">Take Photo</button>
+    </div>
+
+    <div id="strip-container">
+        <button id="layoutBtn">Switch to Strip Layout</button>
+        <!-- Captured photos will appear here -->
+    </div>
+</div>
+
+<div id="flash"></div>
+
+<audio id="shutterSound" src="https://www.soundjay.com/mechanical/camera-shutter-click-01.mp3" preload="auto"></audio>
+
+<script src="myScript.js"></script>
+</body>
+</html>

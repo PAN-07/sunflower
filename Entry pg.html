@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I LOVE U</title>
+
+<!-- Fun Font -->
+<link href="https://fonts.googleapis.com/css2?family=Chewy&display=swap" rel="stylesheet">
+
+<style>
+html,body{
+    margin:0;
+    height:100%;
+    overflow:hidden;
+    font-family:'Comic Sans MS', cursive;
+}
+
+/* ===============================
+   🌈 PARALLAX PASTEL SKY
+================================ */
+.sky{
+    position:fixed;
+    width:100%;
+    height:100%;
+    z-index:-3;
+    background:linear-gradient(120deg,#ffd6e0,#d0f4ff,#fff3b0,#e4c1f9);
+    background-size:400% 400%;
+    animation:skyMove 25s ease infinite alternate;
+}
+@keyframes skyMove{
+    0%{background-position:0% 50%;}
+    100%{background-position:100% 50%;}
+}
+
+/* Extra slow cloud layer */
+.sky::after{
+    content:"";
+    position:absolute;
+    width:200%;
+    height:200%;
+    background:radial-gradient(circle at 20% 30%, rgba(255,255,255,0.4) 0%, transparent 40%),
+               radial-gradient(circle at 70% 60%, rgba(255,255,255,0.4) 0%, transparent 40%);
+    animation:cloudMove 60s linear infinite;
+}
+@keyframes cloudMove{
+    from{transform:translateX(0);}
+    to{transform:translateX(-25%);}
+}
+
+/* ===============================
+   📜 PAPER GRAIN OVERLAY
+================================ */
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    background-image:
+    repeating-radial-gradient(circle at 0 0,
+    rgba(0,0,0,0.04) 0px,
+    rgba(0,0,0,0.04) 1px,
+    transparent 1px,
+    transparent 3px);
+    opacity:0.25;
+    pointer-events:none;
+    z-index:-1;
+}
+
+/* ===============================
+   FLOATING DOODLES
+================================ */
+.doodle{
+    position:absolute;
+    font-size:28px;
+    animation:float 6s ease-in-out infinite;
+    opacity:0.8;
+}
+@keyframes float{
+    0%{transform:translateY(0px);}
+    50%{transform:translateY(-25px);}
+    100%{transform:translateY(0px);}
+}
+
+/* ===============================
+   ENTRY LAYOUT
+================================ */
+#entry{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    transition:opacity 1.5s ease;
+}
+
+.fade-out{
+    opacity:0;
+}
+
+/* ===============================
+   CURTAIN STYLE
+================================ */
+.curtain{
+    transition:transform 1.8s cubic-bezier(.68,-0.6,.32,1.6);
+    transform-origin: top center;
+}
+
+.open-left{
+    transform:translateX(-120px) rotate(-8deg);
+}
+.open-right{
+    transform:translateX(120px) rotate(8deg);
+}
+
+/* Ink splash look */
+.splash{
+    fill:black;
+    opacity:0.08;
+}
+
+/* Camera page */
+#cameraPage{
+    display:none;
+    height:100vh;
+    background:white;
+    justify-content:center;
+    align-items:center;
+    font-size:30px;
+}
+
+.doodle:nth-child(odd){
+    animation-duration: 8s;
+}
+
+.doodle:nth-child(even){
+    animation-duration: 5s;
+}
+
+.fade-text {
+    transition: opacity 1s ease;
+    opacity: 0;
+}
+
+</style>
+</head>
+<body>
+
+<div class="sky"></div>
+
+<!-- Floating doodles -->
+<div class="doodle" style="top:10%;left:10%;">⭐</div>
+<div class="doodle" style="top:20%;right:12%;">💖</div>
+<div class="doodle" style="bottom:15%;left:15%;">✨</div>
+<div class="doodle" style="bottom:10%;right:12%;">🌟</div>
+
+<!-- Extra Floating Doodles -->
+
+<div class="doodle" style="top:8%;left:40%;">⭐</div>
+<div class="doodle" style="top:30%;left:5%;">🌻</div>
+<div class="doodle" style="bottom:35%;right:18%;color:#0b3d91;">✨</div>
+<div class="doodle" style="bottom:25%;right:30%;">🌻</div>
+
+<div class="doodle" style="top:15%;left:75%;color:#0b3d91;">💙</div>
+<div class="doodle" style="top:50%;left:20%;color:#0b3d91;">💙</div>
+
+<div class="doodle" style="top:40%;right:5%;">🐠</div>
+<div class="doodle" style="bottom:20%;left:35%;">🐟</div>
+<div class="doodle" style="top:70%;left:60%;">🐠</div>
+
+<div id="entry">
+
+<svg width="520" viewBox="0 0 500 650">
+
+<!-- 🖋 Ink Splashes -->
+<path class="splash"
+d="M90 250 q40 -60 90 0 t90 0 q-40 60 -90 0 t-90 0z"/>
+
+<!-- 🎨 Colorful Booth Roof -->
+<rect x="120" y="120" width="260" height="60"
+      fill="url(#roofGrad)"
+      stroke="#333"
+      stroke-width="4"
+      filter="url(#boothShadow)"/>
+
+<!-- 🎨 PHOTOBOOTH TEXT -->
+<text id="boothText" x="250" y="160"
+      text-anchor="middle"
+      font-family="'Chewy', cursive"
+      font-size="32"
+      fill="#ffcc00"
+      stroke="#800000"
+      stroke-width="1.5">
+      PHOTOBOOTH
+</text>
+
+<!-- 🎨 Colorful Booth Body -->
+<rect x="140" y="180" width="220" height="360"
+      fill="url(#boothMetal)"
+      stroke="#333"
+      stroke-width="4"
+      filter="url(#boothShadow)"/>
+
+<!-- Screen frame -->
+<rect x="200" y="210" width="100" height="70"
+      fill="#fff1c1"
+      stroke="black" stroke-width="3"
+      rx="10"/>
+
+<!-- Screen display -->
+<rect x="210" y="220" width="80" height="45"
+      fill="rgba(0,0,0,0.15)"
+      stroke="black" stroke-width="2"
+      rx="6"/>
+
+<rect x="210" y="220" width="80" height="45"
+      fill="url(#glassShine)"
+      rx="6"/>      
+
+<circle cx="250" cy="217" r="6" fill="black"/>
+<circle cx="250" cy="217" r="3" fill="#444"/>
+<circle cx="252" cy="215" r="1.5" fill="white"/>
+
+<!-- Chair -->
+<rect x="215" y="430" width="70" height="20"
+      fill="#ffc8dd"
+      stroke="black" stroke-width="3"
+      rx="5"/>
+
+<rect x="225" y="395" width="50" height="40"
+      fill="#ffc8dd"
+      stroke="black" stroke-width="3"
+      rx="6"/>
+
+<line x1="225" y1="450" x2="215" y2="480"
+      stroke="black" stroke-width="3"/>
+<line x1="275" y1="450" x2="285" y2="480"
+      stroke="black" stroke-width="3"/>
+
+<!-- Realistic Curtain Gradients -->
+<defs>
+
+  <!-- Ultra Realistic Curtain Fabric Gradient -->
+  <linearGradient id="curtainGrad" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0%" stop-color="#7a0f2b"/>
+    <stop offset="15%" stop-color="#a4133c"/>
+    <stop offset="35%" stop-color="#c9184a"/>
+    <stop offset="50%" stop-color="#ff4d6d"/>
+    <stop offset="65%" stop-color="#c9184a"/>
+    <stop offset="85%" stop-color="#a4133c"/>
+    <stop offset="100%" stop-color="#7a0f2b"/>
+  </linearGradient>
+
+  <!-- Vertical Fabric Depth -->
+  <linearGradient id="curtainDepth" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="rgba(0,0,0,0.25)"/>
+    <stop offset="40%" stop-color="rgba(0,0,0,0.05)"/>
+    <stop offset="100%" stop-color="rgba(0,0,0,0.35)"/>
+  </linearGradient>
+
+  <!-- Soft Velvet Shine -->
+  <linearGradient id="curtainShine" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0%" stop-color="rgba(255,255,255,0)"/>
+    <stop offset="50%" stop-color="rgba(255,255,255,0.15)"/>
+    <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+  </linearGradient>
+
+  <!-- Heavy Fabric Shadow -->
+  <filter id="fabricShadow" x="-30%" y="-30%" width="160%" height="160%">
+    <feDropShadow dx="4" dy="8" stdDeviation="8" flood-opacity="0.35"/>
+  </filter>
+
+  <!-- Inner Fold Shadow -->
+  <filter id="innerShadow">
+    <feOffset dx="0" dy="0"/>
+    <feGaussianBlur stdDeviation="6" result="offset-blur"/>
+    <feComposite operator="out" in="SourceGraphic" in2="offset-blur"/>
+    <feColorMatrix type="matrix"
+      values="0 0 0 0 0
+              0 0 0 0 0
+              0 0 0 0 0
+              0 0 0 .6 0"/>
+    <feBlend in="SourceGraphic"/>
+  </filter>
+
+  <!-- Keep your other gradients below unchanged -->
+  
+  <linearGradient id="boothMetal" x1="0" x2="0" y1="0" y2="1">
+    <stop offset="0%" stop-color="#e3f2fd"/>
+    <stop offset="50%" stop-color="#bde0fe"/>
+    <stop offset="100%" stop-color="#90caf9"/>
+  </linearGradient>
+
+  <linearGradient id="roofGrad" x1="0" x2="0" y1="0" y2="1">
+    <stop offset="0%" stop-color="#ffccd5"/>
+    <stop offset="100%" stop-color="#ff8fab"/>
+  </linearGradient>
+
+  <linearGradient id="glassShine" x1="0" x2="1">
+    <stop offset="0%" stop-color="rgba(255,255,255,0.6)"/>
+    <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+  </linearGradient>
+
+  <filter id="boothShadow" x="-30%" y="-30%" width="160%" height="160%">
+    <feDropShadow dx="0" dy="10" stdDeviation="8" flood-opacity="0.25"/>
+  </filter>
+
+</defs>
+
+<!-- Left Curtain -->
+<path id="curtainLeft"
+d="M150 190 Q170 260 150 330 Q170 400 150 470
+   L120 470 Q140 400 120 330 Q140 260 120 190 Z"
+fill="url(#curtainGrad)"
+filter="url(#fabricShadow)"
+class="curtain"/>
+
+<!-- Right Curtain -->
+<path id="curtainRight"
+d="M350 190 Q330 260 350 330 Q330 400 350 470
+   L380 470 Q360 400 380 330 Q360 260 380 190 Z"
+fill="url(#curtainGrad)"
+filter="url(#fabricShadow)"
+class="curtain"/>
+
+<!-- Click area -->
+<rect x="200" y="240" width="100" height="260"
+fill="rgba(255,255,255,0.3)"
+rx="20"
+onclick="openCurtain()"/>
+
+<text x="250" y="600" text-anchor="middle"
+font-size="20">Click Inside ✨</text>
+
+</svg>
+
+</div>
+
+<audio id="hoverSound"
+src="https://assets.mixkit.co/sfx/preview/mixkit-pencil-writing-on-paper-2085.mp3"></audio>
+
+<script>
+
+let wave = 0;
+setInterval(()=>{
+    wave += 0.08;
+
+    let leftCurve = 170 + Math.sin(wave)*15;
+    let rightCurve = 330 + Math.sin(wave)*15;
+
+    document.getElementById("curtainLeft")
+    .setAttribute("d",
+    `M150 190 Q${leftCurve} 260 150 330 Q${leftCurve} 400 150 470`);
+
+    document.getElementById("curtainRight")
+    .setAttribute("d",
+    `M350 190 Q${rightCurve} 260 350 330 Q${rightCurve} 400 350 470`);
+
+},40);
+
+const sound = document.getElementById("hoverSound");
+document.getElementById("entry").addEventListener("mouseenter",()=>{
+    sound.volume = 0.15;
+    sound.play().catch(()=>{});
+});
+
+function openCurtain(){
+    // Fade out curtains
+    document.getElementById("curtainLeft").classList.add("open-left");
+    document.getElementById("curtainRight").classList.add("open-right");
+
+    // Fade out PHOTOBOOTH text
+    const boothText = document.getElementById("boothText");
+    boothText.classList.add("fade-text");
+
+    // After text fades, change text to Happy Birthday Honey and fade in
+    setTimeout(()=>{
+        boothText.textContent = "Happy Birthday Honey 🍯";
+        boothText.setAttribute("font-size","24"); // fits inside the roof
+        boothText.style.opacity = "1"; // fade in new text
+        boothText.style.transition = "opacity 1s ease";
+    }, 1000); // match the fade-out duration
+
+    // Fade out whole entry
+    setTimeout(()=>{
+        document.getElementById("entry").classList.add("fade-out");
+    }, 2000);
+
+    // Go to next page
+    setTimeout(()=>{
+        window.location.href = "Cam pg.html";
+    }, 3200);
+}
+
+</script>
+
+</body>
+</html>
