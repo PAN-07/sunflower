@@ -13,6 +13,23 @@ const compliments = [
     "FAHHHHHHHH 🗣️"
 ];
 
+function getFormattedDate(){
+    const d = new Date();
+
+    const day = String(d.getDate()).padStart(2,'0');
+    const month = String(d.getMonth()+1).padStart(2,'0');
+    const year = d.getFullYear();
+
+    let hours = d.getHours();
+    const minutes = String(d.getMinutes()).padStart(2,'0');
+
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+
+    return `${day}/${month}/${year}, ${hours}:${minutes} ${ampm}`;
+}
+
 const flash = document.getElementById("flash");
 const shutterSound = document.getElementById("shutterSound");
 
@@ -77,7 +94,6 @@ document.addEventListener('keydown', (e)=>{
 // Take photo function
 function takePhoto(){
 
-    // Flash effect
     flash.style.opacity = "1";
     shutterSound.currentTime = 0;
     shutterSound.play();
@@ -92,14 +108,12 @@ function takePhoto(){
 
     const ctx = canvas.getContext('2d');
 
-    // Apply filter BEFORE drawing
     ctx.filter = currentFilter;
     ctx.save();
     ctx.scale(-1, 1);
     ctx.drawImage(video, -canvas.width, 0, canvas.width, canvas.height);
     ctx.restore();
 
-    // Create photo container
     const photoDiv = document.createElement('div');
     photoDiv.className='strip-photo';
     
@@ -115,7 +129,7 @@ function takePhoto(){
 
     const dateEl = document.createElement('div');
     dateEl.className='photo-date';
-    dateEl.textContent = new Date().toLocaleString();
+    dateEl.textContent = getFormattedDate();
 
     const printBtn = document.createElement('button');
     printBtn.textContent = 'Print';
@@ -125,12 +139,44 @@ function takePhoto(){
     printBtn.style.padding='5px 10px';
     printBtn.style.cursor='pointer';
     printBtn.addEventListener('click', ()=>{
-        const w = window.open('');
-        w.document.write(`<img src="${img.src}"><p>${dateEl.textContent}</p>`);
-        w.print();
-    });
 
-    // Insert new photo at top
+    const image = new Image();
+    image.src = img.src;
+
+    image.onload = ()=>{
+
+        const sideBorder = 20;
+        const topBorder = 20;
+        const bottomBorder = 70;
+
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+
+        canvas.width = image.width + sideBorder*2;
+        canvas.height = image.height + topBorder + bottomBorder;
+
+        // white polaroid background
+        ctx.fillStyle = "white";
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+
+        // draw photo
+        ctx.drawImage(image, sideBorder, topBorder, image.width, image.height);
+
+        // draw date at bottom
+        ctx.fillStyle = "black";
+        ctx.font = "16px Comic Sans MS";
+        ctx.textAlign = "center";
+        ctx.fillText(dateEl.textContent, canvas.width/2, canvas.height-25);
+
+        const link = document.createElement("a");
+        link.download = "photobooth-polaroid.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+
+    }
+
+});
+
     stripContainer.insertBefore(photoDiv, stripContainer.children[1]);
 
     if(currentLayout === 'polaroid'){
@@ -152,7 +198,7 @@ function takePhoto(){
         if(bottomPhoto){
             const bottomDate = document.createElement('div');
             bottomDate.className='photo-date';
-            bottomDate.textContent = new Date().toLocaleString();
+            bottomDate.textContent = getFormattedDate();
 
             const bottomPrint = document.createElement('button');
             bottomPrint.textContent = 'Print';
@@ -163,63 +209,62 @@ function takePhoto(){
             bottomPrint.style.cursor='pointer';
 
             bottomPrint.addEventListener('click', ()=>{
-                const w = window.open('');
+
                 const allStripPhotos = stripContainer.querySelectorAll('.photo-strip-style');
 
-                let stripHTML = `
-                    <html>
-                    <head>
-                        <title>Print Strip</title>
-                        <style>
-                            body{
-                                margin:0;
-                                display:flex;
-                                justify-content:center;
-                                background:white;
-                                font-family: 'Comic Sans MS', cursive;
-                            }
-                            .strip{
-                                width:300px;
-                                border-left:6px solid #fff;
-                                border-right:6px solid #fff;
-                                border-top:6px solid #fff;
-                                border-bottom:6px solid #fff;
-                            }
-                            .strip img{
-                                width:100%;
-                                display:block;
-                            }
-                            .date{
-                                text-align:center;
-                                padding:8px;
-                                font-size:14px;
-                            }
-                            @media print{
-                                body{
-                                    margin:0;
-                                }
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        <div class="strip">
-                `;
+                const width = 300;
+                const sideBorder = 12;
+                const topBorder = 12;
+                const divider = 8;
+
+                const firstImg = allStripPhotos[0].querySelector('img');
+                const ratio = firstImg.naturalHeight / firstImg.naturalWidth;
+                const imgHeight = width * ratio;
+
+                const canvas = document.createElement("canvas");
+                const ctx = canvas.getContext("2d");
+
+                canvas.width = width + sideBorder*2;
+                canvas.height = topBorder + (imgHeight * allStripPhotos.length) + (divider * (allStripPhotos.length-1)) + 30;
+
+                ctx.fillStyle = "white";
+                ctx.fillRect(0,0,canvas.width,canvas.height);
+
+                let y = topBorder;
+
+                const images = [];
 
                 for(let i = allStripPhotos.length - 1; i >= 0; i--){
                     const imgEl = allStripPhotos[i].querySelector('img');
-                    stripHTML += `<img src="${imgEl.src}">`;
+                    const im = new Image();
+                    im.src = imgEl.src;
+                    images.push(im);
                 }
 
-                stripHTML += `
-                            <div class="date">${bottomDate.textContent}</div>
-                        </div>
-                    </body>
-                    </html>
-                `;
+                let loaded = 0;
 
-                w.document.write(stripHTML);
-                w.document.close();
-                w.print();
+                images.forEach((im)=>{
+                    im.onload = ()=>{
+                        const h = width * (im.height / im.width);
+                        ctx.drawImage(im,sideBorder,y,width,h);
+                        y += h + divider;
+                        loaded++;
+
+                        if(loaded === images.length){
+
+                            ctx.fillStyle="black";
+                            ctx.font="14px Comic Sans MS";
+                            ctx.textAlign="center";
+                            ctx.fillText(bottomDate.textContent, canvas.width/2, canvas.height-10);
+
+                            const link = document.createElement("a");
+                            link.download="photobooth-strip.png";
+                            link.href = canvas.toDataURL("image/png");
+                            link.click();
+                        }
+                    }
+                });
+
             });
 
             bottomPhoto.appendChild(bottomDate);
@@ -234,17 +279,15 @@ function takePhoto(){
 
     createConfetti();
 
-    // Change compliment after each photo
-complimentBox.classList.add("compliment-animate");
+    complimentBox.classList.add("compliment-animate");
 
-setTimeout(()=>{
-    const randomIndex = Math.floor(Math.random() * compliments.length);
-    complimentBox.textContent = compliments[randomIndex];
-    complimentBox.classList.remove("compliment-animate");
-},400);
+    setTimeout(()=>{
+        const randomIndex = Math.floor(Math.random() * compliments.length);
+        complimentBox.textContent = compliments[randomIndex];
+        complimentBox.classList.remove("compliment-animate");
+    },400);
 }
 
-// Confetti function
 function createConfetti(){
     for(let i=0;i<20;i++){
         const conf = document.createElement('div');
