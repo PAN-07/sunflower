@@ -13,16 +13,15 @@ const compliments = [
     "FAHHHHHHHH 🗣️"
 ];
 
-const bgMusic = document.getElementById("angleBaby");
-const musicBtn = document.getElementById("musicBtn");
+musicBtn.addEventListener("click", () => {
 
-document.addEventListener("click", () => {
-    if(bgMusic && bgMusic.paused){
+    if(bgMusic.paused){
 
         bgMusic.volume = 0;
         bgMusic.play().catch(()=>{});
 
         let vol = 0;
+
         const fade = setInterval(()=>{
             vol += 0.05;
             bgMusic.volume = vol;
@@ -31,11 +30,19 @@ document.addEventListener("click", () => {
                 bgMusic.volume = 0.4;
                 clearInterval(fade);
             }
+
         },200);
 
-    }
-}, { once: true });
+        musicBtn.textContent = "🔇 Mute";
 
+    }else{
+
+        bgMusic.pause();
+        musicBtn.textContent = "🔊 Music";
+
+    }
+
+});
 if(musicBtn && bgMusic){
 
     musicBtn.addEventListener("click", () => {
