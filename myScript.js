@@ -3,7 +3,7 @@ const complimentBox = document.getElementById("complimentBox");
 const compliments = [
     "I can't be too nice also ryt? 🥰",
     "WOAHH chill out, the photobooth might break 👩",
-    "DID YOU JUST WOKE UP 🥴",
+    "DID YOU JUST WAKE UP 🥴",
     "EWW 🤢",
     "I HOPE THE WEBSITE CRASHES 💥",
     "THAT PIC WAS SOO... ykw leave it. 👅",
