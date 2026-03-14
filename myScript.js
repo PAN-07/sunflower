@@ -17,7 +17,7 @@ const bgMusic = document.getElementById("angleBaby");
 const musicBtn = document.getElementById("musicBtn");
 
 document.addEventListener("click", () => {
-    if(bgMusic.paused){
+    if(bgMusic && bgMusic.paused){
 
         bgMusic.volume = 0;
         bgMusic.play().catch(()=>{});
@@ -39,7 +39,7 @@ document.addEventListener("click", () => {
 if(musicBtn && bgMusic){
 
     musicBtn.addEventListener("click", () => {
-        if(bgMusic.paused){
+        if(bgMusic && bgMusic.paused){
             bgMusic.play();
             musicBtn.textContent = "🔊 Music";
         } else {
