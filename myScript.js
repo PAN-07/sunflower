@@ -16,16 +16,25 @@ const compliments = [
 const bgMusic = document.getElementById("angleBaby");
 const musicBtn = document.getElementById("musicBtn");
 
-if(bgMusic){
+document.addEventListener("click", () => {
+    if(bgMusic.paused){
 
-    document.addEventListener("click", () => {
-        if(bgMusic.paused){
-            bgMusic.volume = 0.4;
-            bgMusic.play().catch(()=>{});
-        }
-    }, { once: true });
+        bgMusic.volume = 0;
+        bgMusic.play().catch(()=>{});
 
-}
+        let vol = 0;
+        const fade = setInterval(()=>{
+            vol += 0.05;
+            bgMusic.volume = vol;
+
+            if(vol >= 0.4){
+                bgMusic.volume = 0.4;
+                clearInterval(fade);
+            }
+        },200);
+
+    }
+}, { once: true });
 
 if(musicBtn && bgMusic){
 
