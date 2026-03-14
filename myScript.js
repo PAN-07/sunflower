@@ -13,46 +13,40 @@ const compliments = [
     "FAHHHHHHHH 🗣️"
 ];
 
-musicBtn.addEventListener("click", () => {
+const bgMusic = document.getElementById("angleBaby");
+const musicBtn = document.getElementById("musicBtn");
 
-    if(bgMusic.paused){
-
-        bgMusic.volume = 0;
-        bgMusic.play().catch(()=>{});
-
-        let vol = 0;
-
-        const fade = setInterval(()=>{
-            vol += 0.05;
-            bgMusic.volume = vol;
-
-            if(vol >= 0.4){
-                bgMusic.volume = 0.4;
-                clearInterval(fade);
-            }
-
-        },200);
-
-        musicBtn.textContent = "🔇 Mute";
-
-    }else{
-
-        bgMusic.pause();
-        musicBtn.textContent = "🔊 Music";
-
-    }
-
-});
 if(musicBtn && bgMusic){
 
     musicBtn.addEventListener("click", () => {
-        if(bgMusic && bgMusic.paused){
-            bgMusic.play();
-            musicBtn.textContent = "🔊 Music";
-        } else {
+
+        if(bgMusic.paused){
+
+            bgMusic.volume = 0;
+            bgMusic.play().catch(()=>{});
+
+            let vol = 0;
+
+            const fade = setInterval(()=>{
+                vol += 0.05;
+                bgMusic.volume = vol;
+
+                if(vol >= 0.4){
+                    bgMusic.volume = 0.4;
+                    clearInterval(fade);
+                }
+
+            },200);
+
+            musicBtn.textContent = "🔇 Mute";
+
+        }else{
+
             bgMusic.pause();
-            musicBtn.textContent = "🔇 Muted";
+            musicBtn.textContent = "🔊 Music";
+
         }
+
     });
 
 }
@@ -182,44 +176,41 @@ function takePhoto(){
     printBtn.style.border='none';
     printBtn.style.padding='5px 10px';
     printBtn.style.cursor='pointer';
+
     printBtn.addEventListener('click', ()=>{
 
-    const image = new Image();
-    image.src = img.src;
+        const image = new Image();
+        image.src = img.src;
 
-    image.onload = ()=>{
+        image.onload = ()=>{
 
-        const sideBorder = 20;
-        const topBorder = 20;
-        const bottomBorder = 70;
+            const sideBorder = 20;
+            const topBorder = 20;
+            const bottomBorder = 70;
 
-        const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d");
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
 
-        canvas.width = image.width + sideBorder*2;
-        canvas.height = image.height + topBorder + bottomBorder;
+            canvas.width = image.width + sideBorder*2;
+            canvas.height = image.height + topBorder + bottomBorder;
 
-        // white polaroid background
-        ctx.fillStyle = "white";
-        ctx.fillRect(0,0,canvas.width,canvas.height);
+            ctx.fillStyle = "white";
+            ctx.fillRect(0,0,canvas.width,canvas.height);
 
-        // draw photo
-        ctx.drawImage(image, sideBorder, topBorder, image.width, image.height);
+            ctx.drawImage(image, sideBorder, topBorder, image.width, image.height);
 
-        // draw date at bottom
-        ctx.fillStyle = "black";
-        ctx.font = "16px Comic Sans MS";
-        ctx.textAlign = "center";
-        ctx.fillText(dateEl.textContent, canvas.width/2, canvas.height-25);
+            ctx.fillStyle = "black";
+            ctx.font = "16px Comic Sans MS";
+            ctx.textAlign = "center";
+            ctx.fillText(dateEl.textContent, canvas.width/2, canvas.height-25);
 
-        const link = document.createElement("a");
-        link.download = "photobooth-polaroid.png";
-        link.href = canvas.toDataURL("image/png");
-        link.click();
+            const link = document.createElement("a");
+            link.download = "photobooth-polaroid.png";
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+        }
 
-    }
-
-});
+    });
 
     stripContainer.insertBefore(photoDiv, stripContainer.children[1]);
 
