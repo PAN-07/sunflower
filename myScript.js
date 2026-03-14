@@ -14,25 +14,32 @@ const compliments = [
 ];
 
 const bgMusic = document.getElementById("angleBaby");
-
-document.addEventListener("click", () => {
-    if(bgMusic.paused){
-        bgMusic.volume = 0.4; // optional
-        bgMusic.play();
-    }
-}, { once: true });
-
 const musicBtn = document.getElementById("musicBtn");
 
-musicBtn.addEventListener("click", () => {
-    if(bgMusic.paused){
-        bgMusic.play();
-        musicBtn.textContent = "🔊 Music";
-    } else {
-        bgMusic.pause();
-        musicBtn.textContent = "🔇 Muted";
-    }
-});
+if(bgMusic){
+
+    document.addEventListener("click", () => {
+        if(bgMusic.paused){
+            bgMusic.volume = 0.4;
+            bgMusic.play().catch(()=>{});
+        }
+    }, { once: true });
+
+}
+
+if(musicBtn && bgMusic){
+
+    musicBtn.addEventListener("click", () => {
+        if(bgMusic.paused){
+            bgMusic.play();
+            musicBtn.textContent = "🔊 Music";
+        } else {
+            bgMusic.pause();
+            musicBtn.textContent = "🔇 Muted";
+        }
+    });
+
+}
 
 function getFormattedDate(){
     const d = new Date();
