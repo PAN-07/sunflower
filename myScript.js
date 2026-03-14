@@ -13,6 +13,27 @@ const compliments = [
     "FAHHHHHHHH 🗣️"
 ];
 
+const bgMusic = document.getElementById("bgMusic");
+
+document.addEventListener("click", () => {
+    if(bgMusic.paused){
+        bgMusic.volume = 0.4; // optional
+        bgMusic.play();
+    }
+}, { once: true });
+
+const musicBtn = document.getElementById("musicBtn");
+
+musicBtn.addEventListener("click", () => {
+    if(bgMusic.paused){
+        bgMusic.play();
+        musicBtn.textContent = "🔊 Music";
+    } else {
+        bgMusic.pause();
+        musicBtn.textContent = "🔇 Muted";
+    }
+});
+
 function getFormattedDate(){
     const d = new Date();
 
