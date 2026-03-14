@@ -19,7 +19,7 @@ const musicBtn = document.getElementById("musicBtn");
 document.addEventListener("click", () => {
     if(bgMusic && bgMusic.paused){
 
-        bgMusic.volume = 0;
+        bgMusic.volume = 100;
         bgMusic.play().catch(()=>{});
 
         let vol = 0;
