@@ -13,7 +13,7 @@ const compliments = [
     "FAHHHHHHHH 🗣️"
 ];
 
-const bgMusic = document.getElementById("bgMusic");
+const bgMusic = document.getElementById("angleBaby");
 
 document.addEventListener("click", () => {
     if(bgMusic.paused){
